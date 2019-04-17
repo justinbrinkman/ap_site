@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.0 -->
+<title>Monte Carlo Simulation in Python | Apply Python</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Monte Carlo Simulation in Python" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html" />
+<meta property="og:url" content="http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html" />
+<meta property="og:site_name" content="Apply Python" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-04-16T18:30:46-05:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html","headline":"Monte Carlo Simulation in Python","dateModified":"2019-04-16T18:30:46-05:00","datePublished":"2019-04-16T18:30:46-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html"},"description":"Introduction","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Apply Python" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Apply Python</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/">Articles</a><a class="page-link" href="/connect/">Connect</a><a class="page-link" href="/resources/">Resources</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Monte Carlo Simulation in Python</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-04-16T18:30:46-05:00" itemprop="datePublished">Apr 16, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+
+<p>A <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo Simulation</a> is a method used for risk assessment
+in project management, finance and general forecasting.  This technique is an effective way to simulate potential 
+outcomes of a given decision, and is particularly useful when the analysis is based on estimated values.</p>
+
+<p>I originally developed a Monte Carlo program out of necessity. I was working on an engineering risk analysis and couldn’t 
+find a good tool to perform this technique.  I found confusing Excel plug-ins and expensive dedicated software.  So I decided
+to create my own Monte Carlo program!</p>
+
+<p>In this article, we will run a simple Monte Carlo simulation to determine if a new manufacturing line is a good investment.
+Rather than guessing if we will break even, let’s use statistics!</p>
+
+<h2 id="lets-get-started">Let’s Get Started</h2>
+
+<h1 id="prepare-the-data">Prepare the Data</h1>
+
+<p>A potential client requests 90,000-120,000 bottles per year of a new specialty bottled drink and wants to pay no more than
+$1.75 per bottle.  We want to know if we should invest in a new manufacturing line to fulfill this request.  Our company 
+likes payback periods to be under 2 years for new projects. Can we make our money back on this project in 2 years?</p>
+
+<p>We found quotes for equipment, installation and ingredient costs, and our data is as follows:</p>
+<ul>
+  <li>Capital Cost:		$300,000</li>
+  <li>Operating Cost:	$1.00/bottle</li>
+  <li>Production:		90,000-120,000 bottles/year</li>
+  <li>Selling Price:	$1.75/bottle (maximum)</li>
+</ul>
+
+<p>Now, we don’t really <em>know</em> that the capital cost of the project will be $300,000 or that the drink will cost $1.00/bottle to
+manufacture.  These are our expected <em>averages</em>, and any profit calculations we do with these numbers will be subject to 
+error.  The real world is not always average.  This is where Monte Carlo comes in handy.</p>
+
+<p>To prepare this data for a Monte Carlo simulation, we should come up with ranges for each uncertain category such that we 
+are 90% sure the actual value will fall somewhere within the range.  Let’s use the following ranges:</p>
+<ul>
+  <li>Capital Cost:		$250,000-350,000</li>
+  <li>Operating Cost:	$0.80 - $1.20/bottle</li>
+  <li>Production:		90,000 - 120,000 bottles/year</li>
+</ul>
+
+<h1 id="develop-the-monte-carlo-program">Develop the Monte Carlo Program</h1>
+
+<p>First thing’s first, we need to import pandas, norm, pyplot and statistics.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">norm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">statistics</span>
+</code></pre></div></div>
+<p>Now it’s time to flex our statistics knowledge.  We want to convert our expected values and 90% ranges into <em>normal
+distributions</em>.  Remember that 90% of normally distributed data is found within +/- 1.645 standard deviations of the
+mean, so this means that there are 2*1.645 = 3.29 standard deviations within our ranges.  Other values could be used
+for this variable if we wanted to use a different confidence level.</p>
+
+<p>To generate these normal distributions, we can use the following code:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">num_stdev</span> <span class="o">=</span> <span class="mf">3.29</span>
+
+<span class="n">capital_cost</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">300000</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="mi">350000</span><span class="o">-</span><span class="mi">250000</span><span class="p">)</span><span class="o">/</span><span class="n">num_stdev</span><span class="p">)</span>
+<span class="n">operating_cost</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.20</span><span class="o">-</span><span class="mf">0.80</span><span class="p">)</span><span class="o">/</span><span class="n">num_stdev</span><span class="p">)</span>
+<span class="n">production</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="mi">105000</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="mi">120000</span><span class="o">-</span><span class="mi">90000</span><span class="p">)</span><span class="o">/</span><span class="n">num_stdev</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Now it’s time for the simulation.  We want to randomly generate values from these distributions so that they can be 
+used to calculate net profit.  Let’s generate one million values for each category.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">num_simulations</span> <span class="o">=</span> <span class="mi">1000000</span>
+
+<span class="n">capital_cost_values</span> <span class="o">=</span> <span class="n">capital_cost</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">num_simulations</span><span class="p">)</span>
+<span class="n">operating_cost_values</span> <span class="o">=</span> <span class="n">operating_cost</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">num_simulations</span><span class="p">)</span>
+<span class="n">production_results</span> <span class="o">=</span> <span class="n">production</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">num_simulations</span><span class="p">)</span>
+</code></pre></div></div>
+<p>And let’s put these results into a dataframe called “data”:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s">"capital_cost"</span><span class="p">:</span> <span class="n">capital_cost_results</span><span class="p">,</span>
+    <span class="s">"operating_cost"</span><span class="p">:</span> <span class="n">operating_cost_results</span><span class="p">,</span>
+    <span class="s">"production"</span><span class="p">:</span> <span class="n">production_results</span><span class="p">,</span>
+    <span class="s">"benefits"</span><span class="p">:</span> <span class="n">production_results</span> <span class="o">*</span> <span class="mf">1.75</span><span class="p">,</span>
+<span class="p">})</span>
+</code></pre></div></div>
+<p><em>Notice that the “benefits” column is calculated by multiplying production results (bottles/year) by the selling price
+($1.75/bottle).</em></p>
+
+<p>The top 5 rows of our data should look something like this, though your randomized data may look a bit different:</p>
+
+<p><img src="/photos/data1.PNG" alt="screenshot" class="img-responsive" /></p>
+
+<p>Excellent.  Now let’s create a new column to show net profit for each simulation.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">data</span><span class="p">[</span><span class="s">"net_profit"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">benefits</span><span class="o">*</span><span class="mi">2</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">capital_cost</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">operating_cost</span><span class="o">*</span><span class="n">data</span><span class="o">.</span><span class="n">production</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><em>Notice that the net profit is calculated as total benefits - capital cost - total operating costs.</em></p>
+<ul>
+  <li>Total Benefits: benefits ($/year) * desired payback (years)</li>
+  <li>Total Operating Costs: operating costs ($/bottle) * production (bottles/year) * desired payback (years)</li>
+</ul>
+
+<p>We now have a net profit column that holds values corresponding to each row in our dataframe. This dataframe should
+have one million rows.</p>
+
+<p><img src="/photos/data2.PNG" alt="screenshot" class="img-responsive" /></p>
+
+<p>Let’s visualize net_profit.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">net_profit</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"net profit ($)"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+<p><img src="/photos/hist1.PNG" alt="screenshot" class="img-responsive" /></p>
+
+<h1 id="interpret-the-results">Interpret the Results</h1>
+
+<p>Let’s calculate the mean and standard deviation of net_profit.  We can then use these values to calculate the 
+z-score of the break-even point (zero net profit).</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stdev</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">stdev</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">net_profit</span><span class="p">)</span>
+<span class="n">mean</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">net_profit</span><span class="p">)</span>
+<span class="n">z_score</span> <span class="o">=</span> <span class="p">(</span><span class="n">mean</span><span class="p">)</span><span class="o">/</span><span class="n">stdev</span>
+</code></pre></div></div>
+<p>Using norm.cdf() we can convert this z-score to a probability.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">"The estimated probability of breaking even after 2 years: "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">z_score</span><span class="p">)))</span>
+</code></pre></div></div>
+<p>Here is my output:</p>
+
+<p><img src="/photos/montecarlo4.PNG" alt="screenshot" class="img-responsive" /></p>
+
+<p>Notice that approximately 57% of the data in the histogram is to the right of zero.  This means that 57% of our 
+simulations were profitable in the specified payback period.</p>
+
+<h1 id="what-to-tell-our-boss">What to Tell Our Boss</h1>
+
+<p>We can say that if we sell the product at $1.75/bottle, we estimate a 57% chance of breaking even in
+2 years. (This might not sound very attractive to our boss.)</p>
+
+<p>However, if we run the simulation again with a 3 year payback, we estimate a 95% chance of breaking even. 
+(Our boss might like the sound of that!)</p>
+
+<p>Accepting a longer payback may even allow us to lower our price from $1.75 in order to ensure customer satisfaction. 
+(Try running the simulation with a selling price of $1.60/bottle and a 3 year payback period.)</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>As you can see, Monte Carlo simulation is a powerful tool for assessing risk by predicting future outcomes. 
+There are many applications for this technique, and this post highlights just one example. This type of analysis
+can be performed in Excel or with other tools, but programming it in Python is easy and fast.</p>
+
+<p>I hope this post provides you with a basic understanding of Monte Carlo theory and gives you ideas for how to do 
+your own analysis. Maybe you can account for depreciation and interest. Feel free to email me and let me
+know what you’re working on, or your thoughts on this article!  I am working on implementing a comment feature
+to this website.</p>
+
+<p>Also, feel free to download this code from my GitHub and use/edit it for your own project.</p>
+
+  </div><a class="u-url" href="/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Apply Python</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name"><body text="green">Est. 2019</body></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Simple tutorials to improve efficiency</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer></body>
+
+</html>
