@@ -7,7 +7,3 @@
 layout: home
 
 ---
-
-
-Articles
-==========
