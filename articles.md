@@ -4,8 +4,4 @@ title: Articles
 permalink: /
 
 
-
 ---
-
-Articles
-==========
