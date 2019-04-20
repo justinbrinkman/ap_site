@@ -23,6 +23,7 @@ I started Apply Python with three main goals:
 3. To provide another resource for others working on similar problems
 
 And now I'm adding a fourth:
+
 4. To promote statistical and evidence-based decision making (don't be a [**sheep**](https://en.wikipedia.org/wiki/Animal_Farm#Other_animals))
 
 Thanks for checking out my website!
