@@ -5,10 +5,22 @@ permalink: /about/
 
 
 ---
-Apply Python was created as a way for me to further develop and share my knowledge of Python programming.
+About Me
+------------
 
-This site is geared towards practical applications of Python (data science, statistics, automation, etc.) and I hope the information will be valuable to those interested in making an impact in the workplace or boosting their resumes with practical programming skills.
+I am an engineer and data enthusiast. I enjoy learning about data science, programming and mathematics and applying
+these skills to answer real questions and solve real problems. 
 
-Professionals in engineering, science, business and many other disciplines can benefit from learning Python, though practical computer science skills are often not taught very well in school (ex. engineering graduates can write programs to simulate vending machines but cannot perform routine data analyses). The goal of Apply Python is to fill some of the gaps in practical programming knowledge that is not taught in school or on the job.
+About Apply Python
+------------------
+
+This website was developed as a way for me to develop and share my knowledge of Python programming and statistics. 
+I started Apply Python with three main goals:
+1) To learn a little bit about web development
+2) To document and accelerate my progress as a data scientist, programmer and engineer
+3) To provide an extra resource for others working on similar problems
+
+Furthermore, it is important to have a healthy dose of skepticism to avoid becoming a [sheep](https://en.wikipedia.org/wiki/Animal_Farm#Other_animals). Evidence-based decision making and statistical conclusion-drawing 
+is encouraged at Apply Python, and is important for engineers, scientists, businesspeople and laypeople alike.
 
 Thanks for checking out my website!
