@@ -19,8 +19,8 @@
 # in the templates via {{ site.myvariable }}.
 
 # Disqus Comments
-#comments: true
-#shortname: applypython
+comments: true
+shortname: applypython
 
 title: Apply Python
 email: jbrinkman96@gmail.com
@@ -45,13 +45,13 @@ plugins:
 # their entries' file path in the `include:` list.
 #
  exclude:
-   - .sass-cache/
-   - .jekyll-cache/
-   - gemfiles/
-   - Gemfile
-   - Gemfile.lock
+#   - .sass-cache/
+#   - .jekyll-cache/
+#   - gemfiles/
+#   - Gemfile
+#   - Gemfile.lock
    - node_modules/
-   - vendor/bundle/
-   - vendor/cache/
-   - vendor/gems/
-   - vendor/ruby/
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
