@@ -3,6 +3,7 @@ layout: post
 title:  "Monte Carlo Simulation in Python"
 date:   2019-04-16 18:30:46 -0500
 categories: python tutorials
+tags: monte carlo simulation method analysis statistics engineering equipment payback project
 comments: true
 ---
 
