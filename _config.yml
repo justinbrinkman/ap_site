@@ -19,7 +19,8 @@
 # in the templates via {{ site.myvariable }}.
 
 # Disqus Comments
-shortname: applypython
+#comments: true
+#shortname: applypython
 
 title: Apply Python
 email: jbrinkman96@gmail.com
