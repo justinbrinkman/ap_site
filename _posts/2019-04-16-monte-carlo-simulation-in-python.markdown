@@ -61,7 +61,7 @@ from scipy.stats import norm
 import matplotlib.pyplot as plt
 import statistics
 ```
-Now it's time to flex our statistics knowledge.  We want to convert our expected values and 90% ranges into *normal
+Now it's time to do some statistics.  We want to convert our expected values and 90% ranges into *normal
 distributions*.  Remember that 90% of normally distributed data is found within +/- 1.645 standard deviations of the
 mean, so this means that there are 2*1.645 = 3.29 standard deviations within our ranges.  Other values could be used
 for this variable if we wanted to use a different confidence level.
