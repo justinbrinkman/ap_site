@@ -9,7 +9,7 @@ permalink: /about/
 I am an engineer and data enthusiast. I enjoy learning about programming & statistics and applying
 these skills to answer real questions and solve real problems. 
 
-This website was developed as a way for me to develop and share my knowledge of Python programming, primarily 
+This website was created as a way for me to develop and share my knowledge of Python programming, primarily 
 as applied to real-world problems in engineering and statistics. There are many online resources for learning Python, 
 but not as many that demonstrate ways for engineers and other working professionals to use Python effectively.
 
