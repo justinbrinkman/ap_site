@@ -5,8 +5,6 @@ permalink: /about/
 
 
 ---
-About
-------------
 
 I am an engineer and data enthusiast. I enjoy learning about programming & statistics and applying
 these skills to answer real questions and solve real problems. 
