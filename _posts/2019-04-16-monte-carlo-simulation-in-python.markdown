@@ -1,6 +1,6 @@
 ﻿---
 layout: post
-title:  "Monte Carlo Simulation in Python"
+title:  "Monte Carlo Simulation - Financial Risk Analysis for a Manufacturing Line"
 date:   2019-04-16 18:30:46 -0500
 categories: python tutorials
 tags: monte carlo simulation method analysis statistics engineering equipment payback project
@@ -15,8 +15,8 @@ in project management, finance and general forecasting.  This technique is an ef
 outcomes of a given decision, and is particularly useful when the analysis is based on estimated values.
 
 I originally developed a Monte Carlo program out of necessity. I was working on an engineering risk analysis and couldn't 
-find a good tool to perform this technique.  I found confusing Excel plug-ins and expensive dedicated software.  So I decided
-to create my own Monte Carlo program!
+find a good tool to perform this technique. I found many confusing Excel plug-ins and expensive dedicated software packages.
+So I decided to create my own Monte Carlo program!
 
 In this article, we will run a simple Monte Carlo simulation to determine if a new manufacturing line is a good investment.
 Rather than guessing if we will break even, let's use statistics!
