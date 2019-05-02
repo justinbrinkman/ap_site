@@ -5,4 +5,4 @@ permalink: /resources/
 
 
 ---
-Coming soon!
+Coming soon

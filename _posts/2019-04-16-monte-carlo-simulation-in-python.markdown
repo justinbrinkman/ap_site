@@ -8,7 +8,7 @@ comments: true
 ---
 
 Introduction
----------------
+===============
 
 A [Monte Carlo Simulation](https://en.wikipedia.org/wiki/Monte_Carlo_method) is a method used for risk assessment
 in project management, finance and general forecasting.  This technique is an effective way to simulate potential 
@@ -21,8 +21,6 @@ So I decided to create my own Monte Carlo program!
 In this article, we will run a simple Monte Carlo simulation to determine if a new manufacturing line is a good investment.
 Rather than guessing if we will break even, let's use statistics!
 
-Let's Get Started
---------------------
 
 
 Prepare the Data
@@ -102,7 +100,7 @@ data = pd.DataFrame({
 
 The top 5 rows of our data should look something like this, though your randomized data may look a bit different:
 
-![screenshot](/photos/data1.PNG){:class="img-responsive"}
+![screenshot](/photos/montecarlo1.PNG){:class="img-responsive"}
 
 Excellent.  Now let's create a new column to show net profit for each simulation.
 
@@ -117,7 +115,7 @@ data["net_profit"] = (data.benefits*2 - data.capital_cost - data.operating_cost*
 We now have a net profit column that holds values corresponding to each row in our dataframe. This dataframe should
 have one million rows.
 
-![screenshot](/photos/data2.PNG){:class="img-responsive"}
+![screenshot](/photos/montecarlo2.PNG){:class="img-responsive"}
 
 Let's visualize net_profit.
 
@@ -126,7 +124,7 @@ plt.hist(data.net_profit, bins=100)
 plt.xlabel("net profit ($)")
 plt.show()
 ```
-![screenshot](/photos/hist1.PNG){:class="img-responsive"}
+![screenshot](/photos/montecarlo3.PNG){:class="img-responsive"}
 
 
 Interpret the Results
@@ -153,7 +151,7 @@ Notice that approximately 57% of the data in the histogram is to the right of ze
 simulations were profitable in the specified payback period.
 
 
-What to Tell Our Boss
+Communicate the Results
 ===============================
 
 We can say that if we sell the product at $1.75/bottle, we estimate a 57% chance of breaking even in
@@ -163,11 +161,11 @@ However, if we run the simulation again with a 3 year payback, we estimate a 95%
 (Our boss might like the sound of that!)  
 
 Accepting a longer payback may even allow us to lower our price from $1.75 in order to ensure customer satisfaction. 
-(Try running the simulation with a selling price of $1.60/bottle and a 3 year payback period.)
+This analysis can be run for multiple price points and payback periods to evaluate many different scenarios. 
 
 
 Conclusion
----------------
+=================
 
 As you can see, Monte Carlo simulation is a powerful tool for assessing risk by predicting future outcomes. 
 There are many applications for this technique, and this post highlights just one example. This type of analysis
@@ -177,4 +175,5 @@ I hope this post provides you with a basic understanding of Monte Carlo theory a
 your own analysis. Maybe you can account for depreciation and interest. Feel free to visit the 'Connect' page and let me
 know what you're working on, or leave a comment below!
 
-Also, feel free to download this code from my GitHub and use/edit it for your own project.
+Also, feel free to download this Jupyter Notebook from [my GitHub](https://github.com/justinbrinkman/applypython) and use/edit 
+it for your own project.

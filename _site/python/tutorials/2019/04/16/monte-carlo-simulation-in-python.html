@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en"><head>
+  <link rel="shortcut icon" type="image/png" href="/favicon.png">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.0 -->
-<title>Monte Carlo Simulation in Python | Apply Python</title>
+<title>Monte Carlo Simulation - Financial Risk Analysis for a Manufacturing Line | Apply Python</title>
 <meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Monte Carlo Simulation in Python" />
+<meta property="og:title" content="Monte Carlo Simulation - Financial Risk Analysis for a Manufacturing Line" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Introduction" />
 <meta property="og:description" content="Introduction" />
@@ -15,7 +16,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-04-16T18:30:46-05:00" />
 <script type="application/ld+json">
-{"url":"http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html","headline":"Monte Carlo Simulation in Python","dateModified":"2019-04-16T18:30:46-05:00","datePublished":"2019-04-16T18:30:46-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html"},"description":"Introduction","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html","headline":"Monte Carlo Simulation - Financial Risk Analysis for a Manufacturing Line","dateModified":"2019-04-16T18:30:46-05:00","datePublished":"2019-04-16T18:30:46-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html"},"description":"Introduction","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Apply Python" /></head>
 <body><header class="site-header" role="banner">
@@ -38,27 +39,25 @@
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Monte Carlo Simulation in Python</h1>
+    <h1 class="post-title p-name" itemprop="name headline">Monte Carlo Simulation - Financial Risk Analysis for a Manufacturing Line</h1>
     <p class="post-meta">
       <time class="dt-published" datetime="2019-04-16T18:30:46-05:00" itemprop="datePublished">Apr 16, 2019
       </time></p>
   </header>
 
   <div class="post-content e-content" itemprop="articleBody">
-    <h2 id="introduction">Introduction</h2>
+    <h1 id="introduction">Introduction</h1>
 
 <p>A <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo Simulation</a> is a method used for risk assessment
 in project management, finance and general forecasting.  This technique is an effective way to simulate potential 
 outcomes of a given decision, and is particularly useful when the analysis is based on estimated values.</p>
 
 <p>I originally developed a Monte Carlo program out of necessity. I was working on an engineering risk analysis and couldn’t 
-find a good tool to perform this technique.  I found confusing Excel plug-ins and expensive dedicated software.  So I decided
-to create my own Monte Carlo program!</p>
+find a good tool to perform this technique. I found many confusing Excel plug-ins and expensive dedicated software packages.
+So I decided to create my own Monte Carlo program!</p>
 
 <p>In this article, we will run a simple Monte Carlo simulation to determine if a new manufacturing line is a good investment.
 Rather than guessing if we will break even, let’s use statistics!</p>
-
-<h2 id="lets-get-started">Let’s Get Started</h2>
 
 <h1 id="prepare-the-data">Prepare the Data</h1>
 
@@ -95,7 +94,7 @@ are 90% sure the actual value will fall somewhere within the range.  Let’s use
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="kn">import</span> <span class="nn">statistics</span>
 </code></pre></div></div>
-<p>Now it’s time to flex our statistics knowledge.  We want to convert our expected values and 90% ranges into <em>normal
+<p>Now it’s time to do some statistics.  We want to convert our expected values and 90% ranges into <em>normal
 distributions</em>.  Remember that 90% of normally distributed data is found within +/- 1.645 standard deviations of the
 mean, so this means that there are 2*1.645 = 3.29 standard deviations within our ranges.  Other values could be used
 for this variable if we wanted to use a different confidence level.</p>
@@ -132,7 +131,7 @@ used to calculate net profit.  Let’s generate one million values for each cate
 
 <p>The top 5 rows of our data should look something like this, though your randomized data may look a bit different:</p>
 
-<p><img src="/photos/data1.PNG" alt="screenshot" class="img-responsive" /></p>
+<p><img src="/photos/montecarlo1.PNG" alt="screenshot" class="img-responsive" /></p>
 
 <p>Excellent.  Now let’s create a new column to show net profit for each simulation.</p>
 
@@ -148,7 +147,7 @@ used to calculate net profit.  Let’s generate one million values for each cate
 <p>We now have a net profit column that holds values corresponding to each row in our dataframe. This dataframe should
 have one million rows.</p>
 
-<p><img src="/photos/data2.PNG" alt="screenshot" class="img-responsive" /></p>
+<p><img src="/photos/montecarlo2.PNG" alt="screenshot" class="img-responsive" /></p>
 
 <p>Let’s visualize net_profit.</p>
 
@@ -156,7 +155,7 @@ have one million rows.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">"net profit ($)"</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div></div>
-<p><img src="/photos/hist1.PNG" alt="screenshot" class="img-responsive" /></p>
+<p><img src="/photos/montecarlo3.PNG" alt="screenshot" class="img-responsive" /></p>
 
 <h1 id="interpret-the-results">Interpret the Results</h1>
 
@@ -178,7 +177,7 @@ z-score of the break-even point (zero net profit).</p>
 <p>Notice that approximately 57% of the data in the histogram is to the right of zero.  This means that 57% of our 
 simulations were profitable in the specified payback period.</p>
 
-<h1 id="what-to-tell-our-boss">What to Tell Our Boss</h1>
+<h1 id="communicate-the-results">Communicate the Results</h1>
 
 <p>We can say that if we sell the product at $1.75/bottle, we estimate a 57% chance of breaking even in
 2 years. (This might not sound very attractive to our boss.)</p>
@@ -187,9 +186,9 @@ simulations were profitable in the specified payback period.</p>
 (Our boss might like the sound of that!)</p>
 
 <p>Accepting a longer payback may even allow us to lower our price from $1.75 in order to ensure customer satisfaction. 
-(Try running the simulation with a selling price of $1.60/bottle and a 3 year payback period.)</p>
+This analysis can be run for multiple price points and payback periods to evaluate many different scenarios.</p>
 
-<h2 id="conclusion">Conclusion</h2>
+<h1 id="conclusion">Conclusion</h1>
 
 <p>As you can see, Monte Carlo simulation is a powerful tool for assessing risk by predicting future outcomes. 
 There are many applications for this technique, and this post highlights just one example. This type of analysis
@@ -199,7 +198,8 @@ can be performed in Excel or with other tools, but programming it in Python is e
 your own analysis. Maybe you can account for depreciation and interest. Feel free to visit the ‘Connect’ page and let me
 know what you’re working on, or leave a comment below!</p>
 
-<p>Also, feel free to download this code from my GitHub and use/edit it for your own project.</p>
+<p>Also, feel free to download this Jupyter Notebook from <a href="https://github.com/justinbrinkman/applypython">my GitHub</a> and use/edit 
+it for your own project.</p>
 
   </div>
   <a class="u-url" href="/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html" hidden></a>
@@ -208,7 +208,7 @@ know what you’re working on, or leave a comment below!</p>
       <div id="disqus_thread"></div>
   <script>
     var disqus_config = function () {
-      this.page.url = 'http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html';
+      this.page.url = 'https://applypython.com';
       this.page.identifier = 'http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html';
     };
     (function() {
@@ -219,6 +219,7 @@ know what you’re working on, or leave a comment below!</p>
     })();
   </script>
   <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
 
       </div>
     </main><footer class="site-footer h-card">
@@ -236,12 +237,25 @@ know what you’re working on, or leave a comment below!</p>
       </div>
 
       <div class="footer-col footer-col-3">
-        <p>Simple tutorials to improve efficiency</p>
+        <p>Programming - Statistics - Engineering</p>
       </div>
     </div>
 
   </div>
 
-</footer></body>
+</footer><script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-138647999-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  </body>
 
 </html>
