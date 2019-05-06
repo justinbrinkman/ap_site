@@ -26,7 +26,7 @@ Please enjoy the conspicuous use of engineering paper for drawings!
 Basic Principles and 2D Method
 ===============================
 
-![screenshot](/photos/estimatepi1.PNG){:class="img-responsive"}
+![screenshot](/photos/estimatepi1.png){:class="img-responsive"}
 
 Consider the drawing above. We have a circle (radius = 1) centered at (0,0) inscribed in a square (side length = 2). 
 Their respective areas are as follows:
