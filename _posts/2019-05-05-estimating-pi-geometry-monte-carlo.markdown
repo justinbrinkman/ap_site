@@ -190,7 +190,7 @@ see if we can make these functions run faster.
 
 **IMPROVEMENTS**
 
--For each of the functions, we can replace ```random.uniform(-1,-1)``` with ```random.random()``` which simply 
+-For each of the functions, we can replace ```random.uniform(-1,1)``` with ```random.random()``` which simply 
 generates a decimal value between 0 and 1. This should be quicker than the former, and won't affect the outcome 
 because these values are squared in the next step. 
 
@@ -201,7 +201,7 @@ Let's see how much of a difference these changes make.
 
 ![screenshot](/photos/estimatepi4.png){:class="img-responsive"}
 
-Wow! Compare the y-axis scale on this plot with the previous plot. **These changes cut our run-time 
+Wow! Compare the vertical scale on this plot with the previous plot. **These changes cut our run-time 
 approximately in half!** This is a bit of an eye-opener to the impact of just a few lines of code. There are many 
 solutions to the same problem, and speed can certainly be an important factor on large-scale projects or resource-
 intensive scripts. In this case, it's not all that important unless you want to run a very large number of simulations.
