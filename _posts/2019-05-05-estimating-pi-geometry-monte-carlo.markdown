@@ -92,7 +92,7 @@ we will relate sphere and cube volumes. We will consider a sphere of radius = 1 
 ![screenshot](/photos/estimatepi2.png){:class="img-responsive"}
 
 $V_{sphere} = \frac{4}{3}\pi r^3 = \frac{4}{3}\pi (1)^3 = \frac{4}{3}\pi$  
-$V_{cube} = length^3 = 2^(3) = 8$
+$V_{cube} = length^3 = 2^{3} = 8$
 
 Thus, $\frac{V_{sphere}}{V_{cube}} = \frac{1}{6}\pi$  
 $\pi \approx 6*\frac{points\ in\ sphere}{points\ in\ cube}$
