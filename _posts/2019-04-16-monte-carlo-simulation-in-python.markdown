@@ -172,8 +172,8 @@ There are many applications for this technique, and this post highlights just on
 can be performed in Excel or with other tools, but programming it in Python is easy and fast. 
 
 I hope this post provides you with a basic understanding of Monte Carlo theory and gives you ideas for how to do 
-your own analysis. Maybe you can account for depreciation and interest. Feel free to visit the 'Connect' page and let me
-know what you're working on, or leave a comment below!
+your own analysis. Maybe you can account for depreciation and interest. Feel free to visit the 'Connect' page 
+or leave a comment below!
 
-Also, feel free to download this Jupyter Notebook from [my GitHub](https://github.com/justinbrinkman/applypython) and use/edit 
-it for your own project.
+Also, feel free to download this Jupyter Notebook from [my GitHub repository](https://github.com/justinbrinkman/applypython) 
+and use/edit it for your own project.

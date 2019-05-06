@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <link rel="shortcut icon" type="image/png" href="/favicon.png">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.0 -->
+<title>Estimating Pi with Geometry and the Monte Carlo Method | Apply Python</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Estimating Pi with Geometry and the Monte Carlo Method" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="http://localhost:4000/python/tutorials/2019/05/05/estimating-pi-geometry-monte-carlo.html" />
+<meta property="og:url" content="http://localhost:4000/python/tutorials/2019/05/05/estimating-pi-geometry-monte-carlo.html" />
+<meta property="og:site_name" content="Apply Python" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-05-05T12:30:46-05:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/python/tutorials/2019/05/05/estimating-pi-geometry-monte-carlo.html","headline":"Estimating Pi with Geometry and the Monte Carlo Method","dateModified":"2019-05-05T12:30:46-05:00","datePublished":"2019-05-05T12:30:46-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/python/tutorials/2019/05/05/estimating-pi-geometry-monte-carlo.html"},"description":"Introduction","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Apply Python" /></head>
+ <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        inlineMath: [['$','$']]
+      }
+    });
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script><body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Apply Python</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/">Articles</a><a class="page-link" href="/connect/">Connect</a><a class="page-link" href="/resources/">Resources</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Estimating Pi with Geometry and the Monte Carlo Method</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-05-05T12:30:46-05:00" itemprop="datePublished">May 5, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="introduction">Introduction</h1>
+
+<p>One cool application of the <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo method</a> is to estimate 
+the value of pi. Simple geometric equations can be used in conjunction with Python’s “random” module to do this. The
+most common and straightforward method is to take a square inscribed in a circle (2D geometry), randomly generate 
+points inside the square, and measure how many of those points fall inside the circle. I decided it would be 
+fun and highly necessary to experiment with this method using 3D and 4D geometry.</p>
+
+<p>This post will cover:</p>
+
+<ol>
+  <li>The use of Python to estimate pi using 2D, 3D, and 4D geometry</li>
+  <li>The analysis, comparison and improvement of the run-times of each of the algorithms</li>
+</ol>
+
+<p>Please enjoy the conspicuous use of engineering paper for drawings!</p>
+
+<h1 id="basic-principles-and-2d-method">Basic Principles and 2D Method</h1>
+
+<p><img src="/photos/estimatepi1.PNG" alt="screenshot" class="img-responsive" /></p>
+
+<p>Consider the drawing above. We have a circle (radius = 1) centered at (0,0) inscribed in a square (side length = 2). 
+Their respective areas are as follows:</p>
+
+<p>$A_{circle} = \pi r^{2} = \pi (1)^{2} = \pi $<br />
+$A_{square} = length^{2} = 2^{2} = 4$</p>
+
+<p>Thus, $\frac{A_{circle}}{A_{square}} = \frac{\pi}{4}$</p>
+
+<p>By randomly generating $n$ points inside the square, we can expect the ratio of points within the circle to total 
+points to be $\pi / 4$ for very large values of $n$. That is, $\frac{points\ in\ circle}{points\ in\ square} \approx \frac{\pi}{4}$. 
+So we can rearrange to get the following equation:</p>
+
+<p>$\pi \approx 4*\frac{points\ in\ circle}{points\ in\ square}$</p>
+
+<p>To generate points, we can perform a Monte Carlo simulation in Python. This is the first step:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">import</span> <span class="nn">random</span>
+</code></pre></div></div>
+<p>We will define a function <code class="highlighter-rouge">montecarlo2d(num_simulations)</code> so we can specify how many points (simulations) we want to 
+generate. We will generate random points inside the square by randomly generating values for x and y between -1 and 1. If 
+you take a look at the first drawing, you will notice that these points will, indeed, fall within the square.</p>
+
+<p>Remember the general equation for a circle: $(x-h)^{2} + (y-k)^{2} = r^{2}$ where $(h,k)$ is the center point. In this case, 
+the center is at $(0,0)$ with radius = 1, yielding the equation $x^{2}+y^{2} = 1^{2}$. This is derived from the Pythagorean 
+theorem, and may be more obvious by taking another look at the first drawing.</p>
+
+<p>So if $x^{2}+y^{2}\leq 1$, then the point is inside the circle.</p>
+
+<p>The code for this function is as follows:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">montecarlo2d</span><span class="p">(</span><span class="n">num_simulations</span><span class="p">):</span>
+    <span class="n">num_cir</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_sq</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_simulations</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">num_cir</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">num_sq</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="mi">4</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_cir</span> <span class="o">/</span> <span class="n">num_sq</span><span class="p">)</span>
+</code></pre></div></div>
+<p>With <code class="highlighter-rouge">num_simulations</code> set to one million, I get the following output:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; montecarlo2d(1000000)
+3.142092
+</code></pre></div></div>
+<p>Not a bad estimate! Now let’s do it in 3-dimensional space.</p>
+
+<h1 id="3d-method">3D Method</h1>
+
+<p>The underlying principle of this method is the same as in 2-dimensions, but instead of relating circle and square areas
+we will relate sphere and cube volumes. We will consider a sphere of radius = 1 inscribed in a cube of length = 2.</p>
+
+<p><img src="/photos/estimatepi2.PNG" alt="screenshot" class="img-responsive" /></p>
+
+<p>$V_{sphere} = \frac{4}{3}\pi r^3 = \frac{4}{3}\pi (1)^3 = \frac{4}{3}\pi$<br />
+$V_{cube} = length^3 = 2^(3) = 8$</p>
+
+<p>Thus, $\frac{V_{sphere}}{V_{cube}} = \frac{1}{6}\pi$<br />
+$\pi \approx 6*\frac{points\ in\ sphere}{points\ in\ cube}$</p>
+
+<p>Given the general equation of a sphere $(x-a)^{2}+(y-b)^{2}+(z-c)^{2} = r^{2}$, with $(a,b,c)$ replaced by our 
+center point $(0,0,0)$ and radius = 1, we get $x^{2}+y^{2}+z^{2}=1$. If $x^{2}+y^{2}+z^{2}\leq1$ then the point is 
+inside the sphere.</p>
+
+<p>The code for this function is as follows:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">montecarlo3d</span><span class="p">(</span><span class="n">num_simulations</span><span class="p">):</span>
+    <span class="n">num_sph</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_cube</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_simulations</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">z</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">num_sph</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">num_cube</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="mi">6</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_sph</span> <span class="o">/</span> <span class="n">num_cube</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Output:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; montecarlo3d(1000000)
+3.1385879999999995
+</code></pre></div></div>
+<p>Seems simple enough. Why not try it in 4D space?</p>
+
+<h1 id="4d-method">4D Method</h1>
+
+<p>We will consider a <a href="https://en.wikipedia.org/wiki/N-sphere">4D hypersphere</a> of radius = 1 centered at the point $(0,0,0,0)$ 
+inscribed in a <a href="https://en.wikipedia.org/wiki/Hypercube">4D hypercube</a> (or tesseract) with length 2 in each direction. 
+Please forgive the lack of a hand-drawing for this example.</p>
+
+<p>After doing some googling, I found the equation for hypervolume of a 4D hypersphere:</p>
+
+<p>$V_{hypersphere} = \frac{1}{2}\pi^{2}r^{4}$</p>
+
+<p>And, as expected for the 4D hypercube: $V_{hypercube} = length^{4}$</p>
+
+<p>Plugging in our values and simplifying:</p>
+
+<p>$\frac{V_{hypersphere}}{V_{hypercube}} = \frac{\frac{1}{2}\pi^{2}1^{4}}{2^{4}} = \frac{1}{32}\pi^{2}$</p>
+
+<p>So $\pi \approx \sqrt{32*\frac{points\ in\ hypersphere}{points\ in\ hypercube}}$</p>
+
+<p>This will follow the same pattern as the previous methods in that $(x_{1})^{2}+(x_{2})^{2}+(x_{3})^{2}+(x_{4})^{2}=1$. 
+If this sum is less than or equal to 1, then the point falls within the hypersphere.</p>
+
+<p>The code for this function is as follows:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="k">def</span> <span class="nf">montecarlo4d</span><span class="p">(</span><span class="n">num_simulations</span><span class="p">):</span>
+    <span class="n">num_nsphere</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">num_hypercube</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_simulations</span><span class="p">):</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">x4</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x3</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">x4</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">num_nsphere</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">num_hypercube</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">32</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_nsphere</span><span class="o">/</span><span class="n">num_hypercube</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>Output:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt;&gt;&gt; montecarlo4d(1000000)
+3.140491681249928
+</code></pre></div></div>
+<p>It actually works!</p>
+
+<h1 id="algorithm-analysis">Algorithm Analysis</h1>
+
+<p>Now, let’s measure the run-times of each of these functions using <code class="highlighter-rouge">time.time()</code>, and plot with
+<code class="highlighter-rouge">matplotlib.plotly</code>.</p>
+
+<p><img src="/photos/estimatepi3.PNG" alt="screenshot" class="img-responsive" /></p>
+
+<p>Nothing surprising here; run time increases as spatial dimensions are added. This is likely due to the increase 
+in randomly generated values assigned to variables, and the general complexity of calculations.</p>
+
+<p>These algorithms would still take a long time to run for, say, <code class="highlighter-rouge">num_simulations = 100 million</code>. Let’s 
+see if we can make these functions run faster.</p>
+
+<p><strong>IMPROVEMENTS</strong></p>
+
+<p>-For each of the functions, we can replace <code class="highlighter-rouge">random.uniform(-1,-1)</code> with <code class="highlighter-rouge">random.random()</code> which simply 
+generates a decimal value between 0 and 1. This should be quicker than the former, and won’t affect the outcome 
+because these values are squared in the next step.</p>
+
+<p>-We can delete the variable that counts the number of points within the square (or cube or hypercube). This 
+number is simply equal to <code class="highlighter-rouge">num_simulations</code> and its computation is wasting valuable time!</p>
+
+<p>Let’s see how much of a difference these changes make.</p>
+
+<p><img src="/photos/estimatepi4.PNG" alt="screenshot" class="img-responsive" /></p>
+
+<p>Wow! Compare the y-axis scale on this plot with the previous plot. <strong>These changes cut our run-time 
+approximately in half!</strong> This is a bit of an eye-opener to the impact of just a few lines of code. There are many 
+solutions to the same problem, and speed can certainly be an important factor on large-scale projects or resource-
+intensive scripts. In this case, it’s not all that important unless you want to run a very large number of simulations.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>A few takeaways from this project:</p>
+
+<ol>
+  <li>Monte Carlo simulations are highly interesting and very do-able in Python.</li>
+  <li>Even a few lines of code can have a major impact on run-time, and I will definitely look for ways to improve my 
+algorithms in future projects. This is something I haven’t cared too much about in the past.</li>
+</ol>
+
+<p>Feel free to check out my code for this project in <a href="https://github.com/justinbrinkman/applypython">my GitHub repository</a> 
+and experiment with it or use it for your own project.</p>
+
+<p>Thanks for reading and feel free to leave a comment or visit the ‘Connect’ page!</p>
+
+  </div>
+  <a class="u-url" href="/python/tutorials/2019/05/05/estimating-pi-geometry-monte-carlo.html" hidden></a>
+</article>
+
+      <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = 'https://applypython.com';
+      this.page.identifier = 'http://localhost:4000/python/tutorials/2019/05/05/estimating-pi-geometry-monte-carlo.html';
+    };
+    (function() {
+      var d = document, s = d.createElement('script');
+      s.src = '//applypython.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Apply Python</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name"><body text="green">Est. 2019</body></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Programming - Statistics - Engineering</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer><script>
+if(!(window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1")) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-138647999-1', 'auto');
+  ga('send', 'pageview');
+}
+</script>
+  
+
+  </body>
+
+</html>

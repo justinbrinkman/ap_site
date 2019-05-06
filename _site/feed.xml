@@ -1,4 +1,204 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-05-02T18:13:31-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Apply Python</title><subtitle>Programming - Statistics - Engineering</subtitle><entry><title type="html">Monte Carlo Simulation - Financial Risk Analysis for a Manufacturing Line</title><link href="http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html" rel="alternate" type="text/html" title="Monte Carlo Simulation - Financial Risk Analysis for a Manufacturing Line" /><published>2019-04-16T18:30:46-05:00</published><updated>2019-04-16T18:30:46-05:00</updated><id>http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python</id><content type="html" xml:base="http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-05-05T21:59:35-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Apply Python</title><subtitle>Programming - Statistics - Engineering</subtitle><entry><title type="html">Estimating Pi with Geometry and the Monte Carlo Method</title><link href="http://localhost:4000/python/tutorials/2019/05/05/estimating-pi-geometry-monte-carlo.html" rel="alternate" type="text/html" title="Estimating Pi with Geometry and the Monte Carlo Method" /><published>2019-05-05T12:30:46-05:00</published><updated>2019-05-05T12:30:46-05:00</updated><id>http://localhost:4000/python/tutorials/2019/05/05/estimating-pi-geometry-monte-carlo</id><content type="html" xml:base="http://localhost:4000/python/tutorials/2019/05/05/estimating-pi-geometry-monte-carlo.html">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;One cool application of the &lt;a href=&quot;https://en.wikipedia.org/wiki/Monte_Carlo_method&quot;&gt;Monte Carlo method&lt;/a&gt; is to estimate 
+the value of pi. Simple geometric equations can be used in conjunction with Python’s “random” module to do this. The
+most common and straightforward method is to take a square inscribed in a circle (2D geometry), randomly generate 
+points inside the square, and measure how many of those points fall inside the circle. I decided it would be 
+fun and highly necessary to experiment with this method using 3D and 4D geometry.&lt;/p&gt;
+
+&lt;p&gt;This post will cover:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The use of Python to estimate pi using 2D, 3D, and 4D geometry&lt;/li&gt;
+  &lt;li&gt;The analysis, comparison and improvement of the run-times of each of the algorithms&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Please enjoy the conspicuous use of engineering paper for drawings!&lt;/p&gt;
+
+&lt;h1 id=&quot;basic-principles-and-2d-method&quot;&gt;Basic Principles and 2D Method&lt;/h1&gt;
+
+&lt;p&gt;&lt;img src=&quot;/photos/estimatepi1.PNG&quot; alt=&quot;screenshot&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Consider the drawing above. We have a circle (radius = 1) centered at (0,0) inscribed in a square (side length = 2). 
+Their respective areas are as follows:&lt;/p&gt;
+
+&lt;p&gt;$A_{circle} = \pi r^{2} = \pi (1)^{2} = \pi $&lt;br /&gt;
+$A_{square} = length^{2} = 2^{2} = 4$&lt;/p&gt;
+
+&lt;p&gt;Thus, $\frac{A_{circle}}{A_{square}} = \frac{\pi}{4}$&lt;/p&gt;
+
+&lt;p&gt;By randomly generating $n$ points inside the square, we can expect the ratio of points within the circle to total 
+points to be $\pi / 4$ for very large values of $n$. That is, $\frac{points\ in\ circle}{points\ in\ square} \approx \frac{\pi}{4}$. 
+So we can rearrange to get the following equation:&lt;/p&gt;
+
+&lt;p&gt;$\pi \approx 4*\frac{points\ in\ circle}{points\ in\ square}$&lt;/p&gt;
+
+&lt;p&gt;To generate points, we can perform a Monte Carlo simulation in Python. This is the first step:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;random&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;We will define a function &lt;code class=&quot;highlighter-rouge&quot;&gt;montecarlo2d(num_simulations)&lt;/code&gt; so we can specify how many points (simulations) we want to 
+generate. We will generate random points inside the square by randomly generating values for x and y between -1 and 1. If 
+you take a look at the first drawing, you will notice that these points will, indeed, fall within the square.&lt;/p&gt;
+
+&lt;p&gt;Remember the general equation for a circle: $(x-h)^{2} + (y-k)^{2} = r^{2}$ where $(h,k)$ is the center point. In this case, 
+the center is at $(0,0)$ with radius = 1, yielding the equation $x^{2}+y^{2} = 1^{2}$. This is derived from the Pythagorean 
+theorem, and may be more obvious by taking another look at the first drawing.&lt;/p&gt;
+
+&lt;p&gt;So if $x^{2}+y^{2}\leq 1$, then the point is inside the circle.&lt;/p&gt;
+
+&lt;p&gt;The code for this function is as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;montecarlo2d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_simulations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;num_cir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;num_sq&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_simulations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;num_cir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;num_sq&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_cir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_sq&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;With &lt;code class=&quot;highlighter-rouge&quot;&gt;num_simulations&lt;/code&gt; set to one million, I get the following output:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; montecarlo2d(1000000)
+3.142092
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Not a bad estimate! Now let’s do it in 3-dimensional space.&lt;/p&gt;
+
+&lt;h1 id=&quot;3d-method&quot;&gt;3D Method&lt;/h1&gt;
+
+&lt;p&gt;The underlying principle of this method is the same as in 2-dimensions, but instead of relating circle and square areas
+we will relate sphere and cube volumes. We will consider a sphere of radius = 1 inscribed in a cube of length = 2.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/photos/estimatepi2.PNG&quot; alt=&quot;screenshot&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;$V_{sphere} = \frac{4}{3}\pi r^3 = \frac{4}{3}\pi (1)^3 = \frac{4}{3}\pi$&lt;br /&gt;
+$V_{cube} = length^3 = 2^(3) = 8$&lt;/p&gt;
+
+&lt;p&gt;Thus, $\frac{V_{sphere}}{V_{cube}} = \frac{1}{6}\pi$&lt;br /&gt;
+$\pi \approx 6*\frac{points\ in\ sphere}{points\ in\ cube}$&lt;/p&gt;
+
+&lt;p&gt;Given the general equation of a sphere $(x-a)^{2}+(y-b)^{2}+(z-c)^{2} = r^{2}$, with $(a,b,c)$ replaced by our 
+center point $(0,0,0)$ and radius = 1, we get $x^{2}+y^{2}+z^{2}=1$. If $x^{2}+y^{2}+z^{2}\leq1$ then the point is 
+inside the sphere.&lt;/p&gt;
+
+&lt;p&gt;The code for this function is as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;montecarlo3d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_simulations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;num_sph&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;num_cube&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_simulations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;num_sph&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;num_cube&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_sph&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;num_cube&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Output:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; montecarlo3d(1000000)
+3.1385879999999995
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Seems simple enough. Why not try it in 4D space?&lt;/p&gt;
+
+&lt;h1 id=&quot;4d-method&quot;&gt;4D Method&lt;/h1&gt;
+
+&lt;p&gt;We will consider a &lt;a href=&quot;https://en.wikipedia.org/wiki/N-sphere&quot;&gt;4D hypersphere&lt;/a&gt; of radius = 1 centered at the point $(0,0,0,0)$ 
+inscribed in a &lt;a href=&quot;https://en.wikipedia.org/wiki/Hypercube&quot;&gt;4D hypercube&lt;/a&gt; (or tesseract) with length 2 in each direction. 
+Please forgive the lack of a hand-drawing for this example.&lt;/p&gt;
+
+&lt;p&gt;After doing some googling, I found the equation for hypervolume of a 4D hypersphere:&lt;/p&gt;
+
+&lt;p&gt;$V_{hypersphere} = \frac{1}{2}\pi^{2}r^{4}$&lt;/p&gt;
+
+&lt;p&gt;And, as expected for the 4D hypercube: $V_{hypercube} = length^{4}$&lt;/p&gt;
+
+&lt;p&gt;Plugging in our values and simplifying:&lt;/p&gt;
+
+&lt;p&gt;$\frac{V_{hypersphere}}{V_{hypercube}} = \frac{\frac{1}{2}\pi^{2}1^{4}}{2^{4}} = \frac{1}{32}\pi^{2}$&lt;/p&gt;
+
+&lt;p&gt;So $\pi \approx \sqrt{32*\frac{points\ in\ hypersphere}{points\ in\ hypercube}}$&lt;/p&gt;
+
+&lt;p&gt;This will follow the same pattern as the previous methods in that $(x_{1})^{2}+(x_{2})^{2}+(x_{3})^{2}+(x_{4})^{2}=1$. 
+If this sum is less than or equal to 1, then the point falls within the hypersphere.&lt;/p&gt;
+
+&lt;p&gt;The code for this function is as follows:&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;math&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;montecarlo4d&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_simulations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;num_nsphere&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;num_hypercube&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;range&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_simulations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;x3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;uniform&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;num_nsphere&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;num_hypercube&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;math&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_nsphere&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;num_hypercube&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Output:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; montecarlo4d(1000000)
+3.140491681249928
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;It actually works!&lt;/p&gt;
+
+&lt;h1 id=&quot;algorithm-analysis&quot;&gt;Algorithm Analysis&lt;/h1&gt;
+
+&lt;p&gt;Now, let’s measure the run-times of each of these functions using &lt;code class=&quot;highlighter-rouge&quot;&gt;time.time()&lt;/code&gt;, and plot with
+&lt;code class=&quot;highlighter-rouge&quot;&gt;matplotlib.plotly&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/photos/estimatepi3.PNG&quot; alt=&quot;screenshot&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nothing surprising here; run time increases as spatial dimensions are added. This is likely due to the increase 
+in randomly generated values assigned to variables, and the general complexity of calculations.&lt;/p&gt;
+
+&lt;p&gt;These algorithms would still take a long time to run for, say, &lt;code class=&quot;highlighter-rouge&quot;&gt;num_simulations = 100 million&lt;/code&gt;. Let’s 
+see if we can make these functions run faster.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;IMPROVEMENTS&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;-For each of the functions, we can replace &lt;code class=&quot;highlighter-rouge&quot;&gt;random.uniform(-1,-1)&lt;/code&gt; with &lt;code class=&quot;highlighter-rouge&quot;&gt;random.random()&lt;/code&gt; which simply 
+generates a decimal value between 0 and 1. This should be quicker than the former, and won’t affect the outcome 
+because these values are squared in the next step.&lt;/p&gt;
+
+&lt;p&gt;-We can delete the variable that counts the number of points within the square (or cube or hypercube). This 
+number is simply equal to &lt;code class=&quot;highlighter-rouge&quot;&gt;num_simulations&lt;/code&gt; and its computation is wasting valuable time!&lt;/p&gt;
+
+&lt;p&gt;Let’s see how much of a difference these changes make.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/photos/estimatepi4.PNG&quot; alt=&quot;screenshot&quot; class=&quot;img-responsive&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Wow! Compare the y-axis scale on this plot with the previous plot. &lt;strong&gt;These changes cut our run-time 
+approximately in half!&lt;/strong&gt; This is a bit of an eye-opener to the impact of just a few lines of code. There are many 
+solutions to the same problem, and speed can certainly be an important factor on large-scale projects or resource-
+intensive scripts. In this case, it’s not all that important unless you want to run a very large number of simulations.&lt;/p&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;A few takeaways from this project:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Monte Carlo simulations are highly interesting and very do-able in Python.&lt;/li&gt;
+  &lt;li&gt;Even a few lines of code can have a major impact on run-time, and I will definitely look for ways to improve my 
+algorithms in future projects. This is something I haven’t cared too much about in the past.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Feel free to check out my code for this project in &lt;a href=&quot;https://github.com/justinbrinkman/applypython&quot;&gt;my GitHub repository&lt;/a&gt; 
+and experiment with it or use it for your own project.&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading and feel free to leave a comment or visit the ‘Connect’ page!&lt;/p&gt;</content><author><name></name></author><category term="monte" /><category term="carlo" /><category term="simulation" /><category term="dimensions" /><category term="2d" /><category term="3d" /><category term="4d" /><category term="geometry" /><category term="pi" /><category term="estimate" /><summary type="html">Introduction</summary></entry><entry><title type="html">Monte Carlo Simulation - Financial Risk Analysis for a Manufacturing Line</title><link href="http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html" rel="alternate" type="text/html" title="Monte Carlo Simulation - Financial Risk Analysis for a Manufacturing Line" /><published>2019-04-16T18:30:46-05:00</published><updated>2019-04-16T18:30:46-05:00</updated><id>http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python</id><content type="html" xml:base="http://localhost:4000/python/tutorials/2019/04/16/monte-carlo-simulation-in-python.html">&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
 
 &lt;p&gt;A &lt;a href=&quot;https://en.wikipedia.org/wiki/Monte_Carlo_method&quot;&gt;Monte Carlo Simulation&lt;/a&gt; is a method used for risk assessment
 in project management, finance and general forecasting.  This technique is an effective way to simulate potential 
@@ -147,8 +347,8 @@ There are many applications for this technique, and this post highlights just on
 can be performed in Excel or with other tools, but programming it in Python is easy and fast.&lt;/p&gt;
 
 &lt;p&gt;I hope this post provides you with a basic understanding of Monte Carlo theory and gives you ideas for how to do 
-your own analysis. Maybe you can account for depreciation and interest. Feel free to visit the ‘Connect’ page and let me
-know what you’re working on, or leave a comment below!&lt;/p&gt;
+your own analysis. Maybe you can account for depreciation and interest. Feel free to visit the ‘Connect’ page 
+or leave a comment below!&lt;/p&gt;
 
-&lt;p&gt;Also, feel free to download this Jupyter Notebook from &lt;a href=&quot;https://github.com/justinbrinkman/applypython&quot;&gt;my GitHub&lt;/a&gt; and use/edit 
-it for your own project.&lt;/p&gt;</content><author><name></name></author><category term="monte" /><category term="carlo" /><category term="simulation" /><category term="method" /><category term="analysis" /><category term="statistics" /><category term="engineering" /><category term="equipment" /><category term="payback" /><category term="project" /><summary type="html">Introduction</summary></entry></feed>
+&lt;p&gt;Also, feel free to download this Jupyter Notebook from &lt;a href=&quot;https://github.com/justinbrinkman/applypython&quot;&gt;my GitHub repository&lt;/a&gt; 
+and use/edit it for your own project.&lt;/p&gt;</content><author><name></name></author><category term="monte" /><category term="carlo" /><category term="simulation" /><category term="method" /><category term="analysis" /><category term="statistics" /><category term="engineering" /><category term="equipment" /><category term="payback" /><category term="project" /><summary type="html">Introduction</summary></entry></feed>
