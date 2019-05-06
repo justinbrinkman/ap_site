@@ -89,7 +89,7 @@ The underlying principle of this method is the same as in 2-dimensions, but inst
 we will relate sphere and cube volumes. We will consider a sphere of radius = 1 inscribed in a cube of length = 2.
 
 
-![screenshot](/photos/estimatepi2.PNG){:class="img-responsive"}
+![screenshot](/photos/estimatepi2.png){:class="img-responsive"}
 
 $V_{sphere} = \frac{4}{3}\pi r^3 = \frac{4}{3}\pi (1)^3 = \frac{4}{3}\pi$  
 $V_{cube} = length^3 = 2^(3) = 8$
@@ -180,7 +180,7 @@ Algorithm Analysis
 Now, let's measure the run-times of each of these functions using ```time.time()```, and plot with 
 ```matplotlib.plotly```. 
 
-![screenshot](/photos/estimatepi3.PNG){:class="img-responsive"}
+![screenshot](/photos/estimatepi3.png){:class="img-responsive"}
 
 Nothing surprising here; run time increases as spatial dimensions are added. This is likely due to the increase 
 in randomly generated values assigned to variables, and the general complexity of calculations.
@@ -199,7 +199,7 @@ number is simply equal to ```num_simulations``` and its computation is wasting v
 
 Let's see how much of a difference these changes make.
 
-![screenshot](/photos/estimatepi4.PNG){:class="img-responsive"}
+![screenshot](/photos/estimatepi4.png){:class="img-responsive"}
 
 Wow! Compare the y-axis scale on this plot with the previous plot. **These changes cut our run-time 
 approximately in half!** This is a bit of an eye-opener to the impact of just a few lines of code. There are many 
