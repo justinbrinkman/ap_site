@@ -21,7 +21,7 @@ This post will cover:
 1. The use of Python to estimate pi using 2D, 3D, and 4D geometry
 2. The analysis, comparison and improvement of the run-times of each of the algorithms
 
-Please enjoy the conspicuous use of engineering paper for drawings!
+Please enjoy the semi-conspicuous use of engineering paper for drawings!
 
 Basic Principles and 2D Method
 ===============================
