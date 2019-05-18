@@ -14,7 +14,7 @@ One cool application of the [Monte Carlo method](https://en.wikipedia.org/wiki/M
 the value of pi. Simple geometric equations can be used in conjunction with Python's "random" module to do this. The
 most common and straightforward method is to take a square inscribed in a circle (2D geometry), randomly generate 
 points inside the square, and measure how many of those points fall inside the circle. I decided it would be 
-fun and highly necessary to experiment with this method using 3D and 4D geometry.
+fun to experiment with this method using 3D and 4D geometry.
 
 This post will cover:
 
