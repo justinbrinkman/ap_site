@@ -1,6 +1,6 @@
 ﻿---
 layout: post
-title:  "Estimating Pi with Geometry and the Monte Carlo Method"
+title:  "Estimating Pi with 4D Geometry and the Monte Carlo Method"
 date:   2019-05-05 12:30:46 -0500
 categories: python tutorials
 tags: monte carlo simulation dimensions 2d 3d 4d geometry pi estimate
