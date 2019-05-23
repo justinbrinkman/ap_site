@@ -6,13 +6,10 @@ permalink: /about/
 
 ---
 
-I am an engineer and math enthusiast. I enjoy learning about programming & statistics and applying
-these skills to answer real questions and solve real problems. I especially enjoy playing around with Python 
-code and working on interesting software and data projects.
-
-This website was created as a way for me to develop and share my knowledge of Python programming, primarily 
-as applied to real-world problems in engineering and statistics. I will also share less practical projects that 
-I find intriguing, but I do hope that the more practical content will be of value to others.
+I am an engineer and programming enthusiast. I enjoy playing around with code and working on interesting 
+software and data projects. This website was created as a way for me to develop and share my knowledge of 
+Python programming, primarily as applied to real-world problem solving techniques and interesting computer 
+science topics.
 
 
 I started Apply Python with four main goals:
