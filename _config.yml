@@ -32,7 +32,7 @@ github_username:  justinbrinkman
 linkedin_username: justinbrinkman
 
 # Build settings
-theme: minima
+theme: jekyll-theme-cayman
 plugins:
   - jekyll-feed
 
